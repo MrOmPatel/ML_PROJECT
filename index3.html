@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Vehicle Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style4.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>EV Vehicle Prediction</h1>
+            <p>Predict the number of vehicles based on the selected parameters.</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <form method="POST" action="/predict">
+                <div class="form-group">
+                    <label for="region">Region</label>
+                    <select name="region" id="region">
+                        {% for region in dropdowns['region'] %}
+                            <option value="{{ region }}" {% if region == selected_values['region'] %} selected {% endif %}>{{ region }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select name="category" id="category">
+                        {% for category in dropdowns['category'] %}
+                            <option value="{{ category }}" {% if category == selected_values['category'] %} selected {% endif %}>{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="parameter">Parameter</label>
+                    <select name="parameter" id="parameter">
+                        {% for parameter in dropdowns['parameter'] %}
+                            <option value="{{ parameter }}" {% if parameter == selected_values['parameter'] %} selected {% endif %}>{{ parameter }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="mode">Mode</label>
+                    <select name="mode" id="mode">
+                        {% for mode in dropdowns['mode'] %}
+                            <option value="{{ mode }}" {% if mode == selected_values['mode'] %} selected {% endif %}>{{ mode }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="powertrain">Powertrain</label>
+                    <select name="powertrain" id="powertrain">
+                        {% for powertrain in dropdowns['powertrain'] %}
+                            <option value="{{ powertrain }}" {% if powertrain == selected_values['powertrain'] %} selected {% endif %}>{{ powertrain }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="year">Year</label>
+                    <input type="number" name="year" id="year" value="{{ selected_values['year'] }}" required>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="submit-btn">Predict</button>
+                </div>
+            </form>
+
+            {% if prediction_text %}
+                <div class="result-box">
+                    <h2>{{ prediction_text }}</h2>
+                </div>
+            {% endif %}
+
+            <div class="plots">
+                {% if cluster_plot %}
+                    <img src="{{ url_for('static', filename='cluster_plot.png') }}" alt="Cluster Plot" class="plot-img">
+                {% endif %}
+                {% if feature_plot %}
+                    <img src="{{ url_for('static', filename='feature_importance.png') }}" alt="Feature Importance" class="plot-img">
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
